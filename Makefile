@@ -12,7 +12,7 @@ bin: $(BOOT_SECT)
 $(BOOT_SECT): boot_sect.asm
 	nasm boot_sect.asm -f bin -o $(BOOT_SECT)
 
-run: $(BOOT_SECT)
+run: setupdirs clean bin
 	qemu-system-x86_64 -fda $(BOOT_SECT) -boot a -m 512
 
 # Initial project setup helper
