@@ -19,8 +19,8 @@ end:
 %include "print.asm"
 
 ; Data
-BOOT_MSG db "PR-DOS v0.1 2024",0x0D,0x0A,0
-CMD_LINE db "A:\> ",0x0D,0x0A,0
+BOOT_MSG db 'PR-DOS v0.1 2024','\r','\n',0
+CMD_LINE db 'A:\> ','\r','\n',0
 
 ; Padding and magic number
   times 510-($-$$) db 0
