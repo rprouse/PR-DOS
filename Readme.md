@@ -27,6 +27,19 @@ The BIOS loads the boot sector to `0x7C00` in memory.
 | 0x0F0000 | Motherboard BIOS |
 | 0x100000 | Free |
 
+### Segment Registers
+
+| Register | Description |
+| --- | --- |
+| cs | Code segment |
+| ds | Data segment |
+| ss | Stack segment |
+| es | Extra data segment |
+| fs | F segment |
+| gs | G segment |
+
+To calculate the absolute address, the CPU multiplies the value in the segment register by 16 and then adds it to your offset address. Multiplying by 16 in Hex effectively shifts the value left one nibble, so if `ds = 0x5E` then the offset would be `0x5E0`.
+
 ## BIOS Interrupts
 
 - [BIOS interrupt call - Wikipedia](https://en.wikipedia.org/wiki/BIOS_interrupt_call)
