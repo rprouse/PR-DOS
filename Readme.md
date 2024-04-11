@@ -4,6 +4,9 @@ Starting a rainy-day project to learn more about how computers work by [Writing 
 
 ## Notes
 
+- [Intel 80386 Reference Programmer's Manual](https://pdos.csail.mit.edu/6.828/2018/readings/i386/toc.htm)
+- [x86 Assembly Programming - WikiBooks](https://en.wikibooks.org/wiki/X86_Assembly)
+
 The boot sector is the first 512 bytes from Cylinder 0, Head 0, Sector 0 of the boot drive. It searches each of the bootable drives for one with the magic number `0xAA55` as the last two bytes of the boot sector. Note that the x86 architecture is little-endian, so the last two bytes are `0x55` and `0xAA`.
 
 Intel compatible CPUs boot into *16-bit real mode* for backwards compatibility with the 8086 processor. It must then be switched to 32-bit or 64-bit protected mode.
@@ -38,7 +41,7 @@ int 0x10     ; call out to the interupt
 
 ## Compiling
 
-Using `nasm`,
+Using `nasm`, the [Netwide Assembler](https://www.nasm.us/)
 
 ```sh
 nasm boot_sect.asm -f bin -o boot_sect.bin
