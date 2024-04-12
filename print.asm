@@ -1,5 +1,5 @@
-%ifndef _print_h_
-%define _print_h_
+%ifndef _PRINT_H_
+%define _PRINT_H_
 
 ; Prints a string pointed to by the BX register using the BIOS
 print_string:
@@ -14,6 +14,23 @@ print_string:
     jmp .loop
 .done:
     popa
+    ret
+
+; Prints a newline using the BIOS
+print_nl:
+    pusha
+    mov ah, 0x0E    ; int =10/ah=0x0e -> BIOS teletype function
+    mov al, 0x0A    ; newline character
+    int 0x10
+    mov al, 0x0D    ; carriage return character
+    int 0x10
+    popa
+    ret
+
+; Prints the value of DX as a hexadecimal number followed by a newline
+print_hex_nl:
+    call print_hex
+    call print_nl
     ret
 
 ; Prints the value of DX as a hexadecimal number
