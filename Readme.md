@@ -54,7 +54,13 @@ int 0x10     ; call out to the interupt
 
 ## Compiling
 
-Using `nasm`, the [Netwide Assembler](https://www.nasm.us/)
+Using `nasm`, the [Netwide Assembler](https://www.nasm.us/)Install on Windows,
+
+```sh
+winget install --id NASM.NASM
+```
+
+Compile,
 
 ```sh
 nasm boot_sect.asm -f bin -o boot_sect.bin
@@ -72,7 +78,17 @@ bochs
 
 ### QEmu
 
-[QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC)
+[QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC).
+
+Install on Windows,
+
+```sh
+winget install --id SoftwareFreedomConservancy.QEMU
+```
+
+Then add `C:\Program Files\qemu` to your `PATH`.
+
+Run with,
 
 ```sh
 qemu-system-x86_64 -fda boot_sect.bin -boot a -m 512
