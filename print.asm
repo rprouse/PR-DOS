@@ -59,6 +59,28 @@ print_hex:
     popa
     ret
 
-HEX_OUT: db "0x0000", 0
+hex_to_char:
+    push bx
+
+    mov   bx, TABLE
+    mov   ax, dx
+
+    mov   ah, al            ;make al and ah equal so we can isolate each half of the byte
+    shr   ah, 4             ;ah now has the high nibble
+    and   al, 0x0F          ;al now has the low nibble
+    xlat                    ;lookup al's contents in our table
+    xchg  ah, al            ;flip around the bytes so now we can get the higher nibble
+    xlat                    ;look up what we just flipped
+
+    mov   bx, HEX_VAL
+    xchg  ah, al
+    mov   [bx], ax          ;append the new character to the string of bytes
+
+    pop bx
+    ret
+
+TABLE:   db '0123456789ABCDEF'
+HEX_OUT: db '0x'
+HEX_VAL: db '0000', 0
 
 %endif
