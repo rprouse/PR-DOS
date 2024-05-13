@@ -72,7 +72,7 @@ bochs
 
 ### QEmu
 
-[QEme](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC)
+[QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC)
 
 ```sh
 qemu-system-x86_64 -fda boot_sect.bin -boot a -m 512
