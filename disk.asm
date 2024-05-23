@@ -21,11 +21,11 @@ disk_load:
   jne disk_error  ; display error message
   ret
 disk_error :
-  mov bx, DISK_ERROR_MSG
+  mov bx, disk_error_msg
   call print_string
   jmp $
 
-; Variables
-DISK_ERROR_MSG db "Disk read error!", 0
+; =============== VARIABLES ===============
+disk_error_msg db "Disk read error!", 0
 
 %endif ; _DISK_H_

@@ -20,9 +20,9 @@ print_string:
 print_nl:
     pusha
     mov ah, 0x0E    ; int =10/ah=0x0e -> BIOS teletype function
-    mov al, 0x0A    ; newline character
+    mov al, CR
     int 0x10
-    mov al, 0x0D    ; carriage return character
+    mov al, LF
     int 0x10
     popa
     ret
@@ -56,6 +56,10 @@ print_hex:
     call print_string
     popa
     ret
+
+; =============== Data ===============
+CR equ 0x0D
+LF equ 0x0A
 
 hex_out: db '0x'
 hex_val: db '0000', 0

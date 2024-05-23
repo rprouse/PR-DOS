@@ -1,19 +1,20 @@
-;
+; ==============================================================================
 ; A boot sector that just prints a message and hangs
 ;
 [org 0x7c00]
-  jmp start
+  jmp _start
 
 %include "print.asm"
 %include "disk.asm"
 
-start:
-  mov [BOOT_DRIVE], dl ; BIOS stores the boot drive in dl
+; ==============================================================================
+_start:
+  mov [boot_drive], dl ; BIOS stores the boot drive in dl
 
-  mov bx, BOOT_MSG
+  mov bx, boot_msg
   call print_string
 
-  mov bx, CMD_LINE
+  mov bx, cmd_line
   call print_string
 
   ; Read some sectors from the boot disk
@@ -22,7 +23,7 @@ start:
 
   mov bx, 0x9000  ; Load 5 sectors to 0x0000(ES):0x9000(BX)
   mov dh, 5       ; from the boot disk
-  mov dl, [BOOT_DRIVE]
+  mov dl, [boot_drive]
   call disk_load
 
   mov dx, [0x9000] ; Print the first word of the loaded sector
@@ -34,10 +35,11 @@ start:
 end:
   jmp $               ; Hang
 
+; ==============================================================================
 ; Data
-BOOT_DRIVE db 0
-BOOT_MSG db 'PR-DOS v0.1 2024',0x0D,0x0A,0
-CMD_LINE db 'A:\> ',0x0D,0x0A,0
+boot_drive db 0
+boot_msg db 'PR-DOS v0.1 2024',CR,LF,0
+cmd_line db 'A:\> ',CR,LF,0
 
 ; Bootsector padding
   times 510-($-$$) db 0
@@ -48,7 +50,7 @@ magic_number:
 
 ; We know that BIOS will load only the first 512-byte sector from the disk ,
 ; so if we purposely add a few more sectors to our code by repeating some
-; familiar numbers , we can prove to ourselfs that we actually loaded those
+; familiar numbers , we can prove to ourselves that we actually loaded those
 ; additional two sectors from the disk we booted from.
 times 256 dw 0xDEAD
 times 256 dw 0xFACE
