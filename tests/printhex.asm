@@ -14,7 +14,7 @@ main:
     NEWLINE ; print newline
     xor eax, eax ; set eax to 0
     ret ; return
-    
+
 ; Prints the value of DX as a hexadecimal number
 print_hex:
     pusha
