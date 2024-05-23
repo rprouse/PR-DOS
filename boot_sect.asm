@@ -1,60 +1,39 @@
 ; ==============================================================================
-; A boot sector that just prints a message and hangs
+; A boot sector that enters protected mode
 ;
-[org 0x7c00]
-  jmp _start
-
-%include "print.inc"
-%include "print32.inc"
-%include "disk.inc"
-%include "gdt.inc"
-
 [bits 16]
+[org 0x7c00]
+  jmp start_rm
 
 ; ==============================================================================
-_start:
-  mov [boot_drive], dl ; BIOS stores the boot drive in dl
+start_rm:
+    mov bp, 0x9000      ; Set up stack
+    mov sp, bp
 
-  mov bx, boot_msg
-  call print_string
+    mov bx, msg_real_mode
+    call print_string   ; Print message using 16-bit real mode
 
-  mov bx, cmd_line
-  call print_string
+    call switch_to_pm   ; Switch to protected mode
 
-  ; Read some sectors from the boot disk
-  mov bx, 0x8000  ; Set the stack out of the way to 0x8000
-  mov sp, bp      ; Note we cannot use an absolute address here
+%include "print.inc"
+%include "print_pm.inc"
+%include "disk.inc"
+%include "protected_mode.inc"
 
-  mov bx, 0x9000  ; Load 5 sectors to 0x0000(ES):0x9000(BX)
-  mov dh, 5       ; from the boot disk
-  mov dl, [boot_drive]
-  call disk_load
-
-  mov dx, [0x9000] ; Print the first word of the loaded sector
-  call print_hex_nl
-
-  mov dx, [0x9000 + 512] ; Print the first word from the second sector
-  call print_hex_nl
+[bits 32]
+start_pm:
+    mov bx, msg_prot_mode
+    call print_string_pm ; Print message using 32-bit protected mode
 
 end:
   jmp $               ; Hang
 
 ; ==============================================================================
 ; Data
-boot_drive db 0
-boot_msg db 'PR-DOS v0.1 2024',CR,LF,0
-cmd_line db 'A:\> ',CR,LF,0
+; Global variables
+msg_real_mode db " Started in 16-bit Real Mode " , 0
+msg_prot_mode db " Successfully landed in 32-bit Protected Mode " , 0
 
 ; Bootsector padding
-  times 510-($-$$) db 0
-
-; Boot sector magic number
-magic_number:
-  dw 0xAA55
-
-; We know that BIOS will load only the first 512-byte sector from the disk ,
-; so if we purposely add a few more sectors to our code by repeating some
-; familiar numbers , we can prove to ourselves that we actually loaded those
-; additional two sectors from the disk we booted from.
-times 256 dw 0xDEAD
-times 256 dw 0xFACE
+times 510-($-$$) db 0
+dw 0xAA55

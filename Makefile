@@ -18,7 +18,7 @@ run-qemu: setupdirs clean bin
 	qemu-system-x86_64 -fda $(BOOT_SECT) -boot a -m 512
 
 run-bochs: setupdirs clean bin
-	bochs -f bochssrc
+	bochs
 
 # Initial project setup helper
 setupdirs:
