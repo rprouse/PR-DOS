@@ -1,5 +1,5 @@
-%ifndef _PRINT32_H_
-%define _PRINT32_H_
+%ifndef _PRINT32_INC_
+%define _PRINT32_INC_
 
 [bits 32]
 
@@ -33,4 +33,4 @@ print_string_pm_done:
     popa
     ret
 
-%endif ; _PRINT32_H_
+%endif ; _PRINT32_INC_

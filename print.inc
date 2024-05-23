@@ -1,5 +1,5 @@
-%ifndef _PRINT_H_
-%define _PRINT_H_
+%ifndef _PRINT_INC_
+%define _PRINT_INC_
 
 [bits 16]
 

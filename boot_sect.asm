@@ -4,9 +4,10 @@
 [org 0x7c00]
   jmp _start
 
-%include "print.asm"
-%include "print32.asm"
-%include "disk.asm"
+%include "print.inc"
+%include "print32.inc"
+%include "disk.inc"
+%include "gdt.inc"
 
 [bits 16]
 

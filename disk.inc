@@ -1,7 +1,7 @@
-%ifndef _DISK_H_
-%define _DISK_H_
+%ifndef _DISK_INC_
+%define _DISK_INC_
 
-%include "print.asm"
+%include "print.inc"
 
 [bits 16]
 
@@ -30,4 +30,4 @@ disk_error :
 ; =============== VARIABLES ===============
 disk_error_msg db "Disk read error!", 0
 
-%endif ; _DISK_H_
+%endif ; _DISK_INC_
