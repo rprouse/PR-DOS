@@ -5,7 +5,10 @@
   jmp _start
 
 %include "print.asm"
+%include "print32.asm"
 %include "disk.asm"
+
+[bits 16]
 
 ; ==============================================================================
 _start:

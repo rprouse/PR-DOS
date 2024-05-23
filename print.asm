@@ -1,6 +1,8 @@
 %ifndef _PRINT_H_
 %define _PRINT_H_
 
+[bits 16]
+
 ; Prints a string pointed to by the BX register using the BIOS
 print_string:
     pusha
