@@ -12,8 +12,13 @@ bin: $(BOOT_SECT)
 $(BOOT_SECT): boot_sect.asm
 	nasm boot_sect.asm -f bin -o $(BOOT_SECT)
 
-run: setupdirs clean bin
+run: run-qemu
+
+run-qemu: setupdirs clean bin
 	qemu-system-x86_64 -fda $(BOOT_SECT) -boot a -m 512
+
+run-bochs: setupdirs clean bin
+	bochs -f bochssrc
 
 # Initial project setup helper
 setupdirs:
