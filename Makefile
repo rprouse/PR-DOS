@@ -6,29 +6,33 @@ KERNEL_OBJ=$(BINDIR)/kernel.o
 KERNEL_ENTRY=$(BINDIR)/kernel_entry.o
 OS_IMG=$(BINDIR)/os-image
 
-.DEFAULT_GOAL := default
-
-default: all
+.DEFAULT_GOAL := all
 
 all: setupdirs clean bin
 
 bin: $(OS_IMG)
 
+# This is the final disk image that will be booted
 $(OS_IMG): $(BOOT_SECT) $(KERNEL)
-	cat $(BOOT_SECT) $(KERNEL) > $(OS_IMG)
+	cat $^ > $@
 
 $(KERNEL): $(KERNEL_ENTRY) $(KERNEL_OBJ)
-	ld -o $(KERNEL) -m elf_i386 -Ttext 0x1000 $(KERNEL_ENTRY) $(KERNEL_OBJ) --oformat binary
+	ld -o $@ -m elf_i386 -Ttext 0x1000 $^ --oformat binary
 
 $(KERNEL_OBJ): kernel.c
-	gcc -ffreestanding -m32 -fno-pie -c kernel.c -o $(KERNEL_OBJ)
+	gcc -ffreestanding -m32 -fno-pie -c $< -o $@
 
 $(KERNEL_ENTRY): kernel_entry.asm
-	nasm kernel_entry.asm -f elf32 -o $(KERNEL_ENTRY)
+	nasm $< -f elf32 -o $@
 
 $(BOOT_SECT): boot_sect.asm
-	nasm boot_sect.asm -f bin -o $(BOOT_SECT)
+	nasm $< -f bin -o $@
 
+# Disassemble the kernel
+disassemble: $(KERNEL)
+	ndisasm -b 32 $< > $(BINDIR)/kernel.dis
+
+# Run the OS in QEMU
 run: run-qemu
 
 run-qemu: setupdirs clean bin

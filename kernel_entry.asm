@@ -3,6 +3,8 @@
 [extern main]
 
 section .text
+    global _start
 
-jmp main       ; Jump to the kernel's entry function
-jmp $          ; Infinite loop
+_start:
+    jmp main       ; Jump to the kernel's entry function
+    jmp $          ; Infinite loop
