@@ -19,14 +19,14 @@ $(OS_IMG): $(BOOT_SECT) $(KERNEL)
 $(KERNEL): $(KERNEL_ENTRY) $(KERNEL_OBJ)
 	ld -o $@ -m elf_i386 -Ttext 0x1000 $^ --oformat binary
 
-$(KERNEL_OBJ): kernel.c
+$(KERNEL_OBJ): kernel/kernel.c
 	gcc -ffreestanding -m32 -fno-pie -c $< -o $@
 
-$(KERNEL_ENTRY): kernel_entry.asm
+$(KERNEL_ENTRY): kernel/kernel_entry.asm
 	nasm $< -f elf32 -o $@
 
-$(BOOT_SECT): boot_sect.asm
-	nasm $< -f bin -o $@
+$(BOOT_SECT): boot/boot_sect.asm
+	nasm $< -f bin -I boot -o $@
 
 # Disassemble the kernel
 disassemble: $(KERNEL)
