@@ -80,6 +80,12 @@ bochs
 
 [QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC).
 
+Install on Linux,
+
+```sh
+sudo apt-get install qemu-system
+```
+
 Install on Windows,
 
 ```sh

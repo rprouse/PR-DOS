@@ -1,4 +1,4 @@
-# This is intended to run on Windows
+# This is intended to run on Linux/WSL
 BINDIR=bin
 BOOT_SECT=$(BINDIR)/boot_sect.bin
 KERNEL=$(BINDIR)/kernel.bin
@@ -16,13 +16,8 @@ $(OS_IMG): $(BOOT_SECT) $(KERNEL)
 	cat $(BOOT_SECT) $(KERNEL) > $(OS_IMG)
 
 $(KERNEL): kernel.c
-# Windows
-	gcc -ffreestanding -m32 -c kernel.c -o bin/kernel.o
-	ld -T NUL -o bin/kernel.tmp -Ttext 0x1000 -m i386pe bin/kernel.o
-	objcopy -O binary -j .text  bin/kernel.tmp bin/kernel.bin
-# Linux
-#	gcc -ffreestanding -m32 -c kernel.c -o bin/kernel.o
-#	ld -o bin/kernel.tmp -Ttext 0x1000 bin/kernel.o --oformat binary
+	gcc -ffreestanding -c kernel.c -o bin/kernel.o
+	ld -o $(KERNEL) -Ttext 0x1000 bin/kernel.o --oformat binary
 
 $(BOOT_SECT): boot_sect.asm
 	nasm boot_sect.asm -f bin -o $(BOOT_SECT)
@@ -30,7 +25,7 @@ $(BOOT_SECT): boot_sect.asm
 run: run-qemu
 
 run-qemu: setupdirs clean bin
-	qemu-system-x86_64 -drive file=$(OS_IMG),format=raw,index=0,if=floppy -boot a -m 512
+	qemu-system-x86_64.exe -drive file=$(OS_IMG),format=raw,index=0,if=floppy -boot a -m 512
 
 run-bochs: setupdirs clean bin
 	bochs
