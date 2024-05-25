@@ -92,6 +92,7 @@ Run with,
 
 ```sh
 qemu-system-x86_64 -fda boot_sect.bin -boot a -m 512
+qemu-system-x86_64 -drive file=boot_sect.bin,format=raw,index=0,if=floppy -boot a -m 512
 ```
 
 ```sh

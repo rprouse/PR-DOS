@@ -15,7 +15,7 @@ $(BOOT_SECT): boot_sect.asm
 run: run-qemu
 
 run-qemu: setupdirs clean bin
-	qemu-system-x86_64 -fda $(BOOT_SECT) -boot a -m 512
+	qemu-system-x86_64 -drive file=$(BOOT_SECT),format=raw,index=0,if=floppy -boot a -m 512
 
 run-bochs: setupdirs clean bin
 	bochs
