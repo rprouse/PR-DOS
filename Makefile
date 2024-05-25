@@ -1,10 +1,32 @@
 # This is intended to run on Linux/WSL
+# Define the compiler and the flags
+CC = gcc
+CFLAGS = -Wall -ffreestanding -m32 -fno-pie -c -o
+LD = ld
+LD_FLAGS = -m elf_i386 -Ttext 0x1000 --oformat binary -o
+NASM = nasm
+
+# Define the directories
+KERNELDIR = kernel
+DRIVERSDIR = drivers
 BINDIR=bin
+OBJDIR = $(BINDIR)
+
+# Define the target files
 BOOT_SECT=$(BINDIR)/boot_sect.bin
 KERNEL=$(BINDIR)/kernel.bin
-KERNEL_OBJ=$(BINDIR)/kernel.o
 KERNEL_ENTRY=$(BINDIR)/kernel_entry.o
 OS_IMG=$(BINDIR)/os-image
+
+# Find all the source files in the kernel and drivers directories
+KERNEL_SOURCES = $(wildcard $(KERNELDIR)/*.c)
+DRIVERS_SOURCES = $(wildcard $(DRIVERSDIR)/*.c)
+SOURCES = $(KERNEL_SOURCES) $(DRIVERS_SOURCES)
+
+# Generate the names of the object files
+KERNEL_OBJECTS = $(patsubst $(KERNELDIR)/%.c, $(OBJDIR)/kernel_%.o, $(KERNEL_SOURCES))
+DRIVERS_OBJECTS = $(patsubst $(DRIVERSDIR)/%.c, $(OBJDIR)/drivers_%.o, $(DRIVERS_SOURCES))
+OBJECTS = $(KERNEL_OBJECTS) $(DRIVERS_OBJECTS)
 
 .DEFAULT_GOAL := all
 
@@ -12,21 +34,26 @@ all: setupdirs clean bin
 
 bin: $(OS_IMG)
 
+# Rule to compile kernel source files into object files
+$(OBJDIR)/kernel_%.o: $(KERNELDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $@ $<
+
+# Rule to compile drivers source files into object files
+$(OBJDIR)/drivers_%.o: $(DRIVERSDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $@ $<
+
 # This is the final disk image that will be booted
 $(OS_IMG): $(BOOT_SECT) $(KERNEL)
 	cat $^ > $@
 
-$(KERNEL): $(KERNEL_ENTRY) $(KERNEL_OBJ)
-	ld -o $@ -m elf_i386 -Ttext 0x1000 $^ --oformat binary
-
-$(KERNEL_OBJ): kernel/kernel.c
-	gcc -ffreestanding -m32 -fno-pie -c $< -o $@
+$(KERNEL): $(KERNEL_ENTRY) $(OBJECTS)
+	$(LD) $(LD_FLAGS) $@ $^
 
 $(KERNEL_ENTRY): kernel/kernel_entry.asm
-	nasm $< -f elf32 -o $@
+	$(NASM) $< -f elf32 -o $@
 
 $(BOOT_SECT): boot/boot_sect.asm
-	nasm $< -f bin -I boot -o $@
+	$(NASM) $< -f bin -I boot -o $@
 
 # Disassemble the kernel
 disassemble: $(KERNEL)
