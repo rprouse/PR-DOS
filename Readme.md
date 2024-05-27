@@ -1,6 +1,6 @@
 # PR-DOS
 
-Starting a rainy-day project to learn more about how computers work by [Writing a Simple Operating System from Scratch](./Writing%20a%20Simple%20Operating%20System%20from%20Scratch.pdf) by Nick Blundell.
+A rainy-day project to learn more about how computers work by writing an operating system. I started with [Writing a Simple Operating System from Scratch](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf) by Nick Blundell, but the paper is an incomplete draft and hasn't been updated since 2010. I've since moved on to following [Building an OS](https://www.youtube.com/watch?v=9t-SPC7Tczc&list=PLFjM7v6KGMpiH2G-kT781ByCNC_0pKpPN) by nanobyte.
 
 ## Notes
 
