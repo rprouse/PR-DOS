@@ -1,7 +1,7 @@
 %ifndef _PRINT_INC_
 %define _PRINT_INC_
 
-[bits 16]
+bits 16
 
 ; Prints a string pointed to by the BX register using the BIOS
 print_string:

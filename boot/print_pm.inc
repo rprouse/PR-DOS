@@ -1,7 +1,7 @@
 %ifndef _PRINT_PM_INC_
 %define _PRINT_PM_INC_
 
-[bits 32]
+bits 32
 
 ; Define constants
 video_memory equ 0xb8000

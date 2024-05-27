@@ -3,7 +3,7 @@
 
 %include "gdt.inc"
 
-[bits 16]
+bits 16
 ; Switch to protected mode (32-bit mode) from real mode (16-bit mode)
 ; This function is called from the bootloader
 switch_to_pm:
@@ -20,7 +20,7 @@ switch_to_pm:
     jmp code_seg:init_pm    ; Jump to the next instruction in 32-bit mode
                             ; code_seg makes it a far jump to flush the prefetch
 
-[bits 32]
+bits 32
 init_pm:
     mov ax, data_seg        ; Load the data segment selector
     mov ds, ax              ; Set the data segment register

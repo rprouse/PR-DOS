@@ -60,13 +60,8 @@ disassemble: $(KERNEL)
 	ndisasm -b 32 $< > $(BINDIR)/kernel.dis
 
 # Run the OS in QEMU
-run: run-qemu
-
-run-qemu: setupdirs clean bin
+run: setupdirs clean bin
 	qemu-system-x86_64 -drive file=$(OS_IMG),format=raw,index=0,if=floppy -boot a -m 512
-
-run-bochs: setupdirs clean bin
-	bochs
 
 # Initial project setup helper
 setupdirs:

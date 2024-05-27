@@ -3,7 +3,7 @@
 
 %include "print.inc"
 
-[bits 16]
+bits 16
 
 ; load DH sectors to ES:BX from drive DL
 disk_load:

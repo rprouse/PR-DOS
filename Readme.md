@@ -2,16 +2,20 @@
 
 A rainy-day project to learn more about how computers work by writing an operating system. I started with [Writing a Simple Operating System from Scratch](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf) by Nick Blundell, but the paper is an incomplete draft and hasn't been updated since 2010. I've since moved on to following [Building an OS](https://www.youtube.com/watch?v=9t-SPC7Tczc&list=PLFjM7v6KGMpiH2G-kT781ByCNC_0pKpPN) by nanobyte.
 
+Other resources, [OSDev wiki](http://wiki.osdev.org/), [The little book about OS development](https://littleosbook.github.io), and [JamesM's kernel development tutorials](https://web.archive.org/web/20160412174753/http://www.jamesmolloy.co.uk/tutorial_html/index.html)
+
 ## Notes
 
 - [Intel 80386 Reference Programmer's Manual](https://pdos.csail.mit.edu/6.828/2018/readings/i386/toc.htm)
 - [x86 Assembly Programming - WikiBooks](https://en.wikibooks.org/wiki/X86_Assembly)
 
-The boot sector is the first 512 bytes from Cylinder 0, Head 0, Sector 0 of the boot drive. It searches each of the bootable drives for one with the magic number `0xAA55` as the last two bytes of the boot sector. Note that the x86 architecture is little-endian, so the last two bytes are `0x55` and `0xAA`.
+The boot sector is the first 512 bytes from Cylinder 0, Head 0, Sector 0 of the boot drive. It searches each of the bootable drives for one with the magic number `0xAA55` as the last two bytes of the boot sector. Note that the x86 architecture is little-endian, so the last two bytes are `0x55` and `0xAA` (`0xAA55` little endian).
+
+Once a bootable sector is found, the BIOS loads the 512 byte boot sector to `0x7C00` in memory and begins executing at that location.
 
 Intel compatible CPUs boot into *16-bit real mode* for backwards compatibility with the 8086 processor. It must then be switched to 32-bit or 64-bit protected mode.
 
-The BIOS loads the boot sector to `0x7C00` in memory.
+## X86/x64 Assembly
 
 | Start memory addr | Description |
 | --- | --- |
@@ -52,31 +56,19 @@ mov al, ’H’  ; the character to output
 int 0x10     ; call out to the interupt
 ```
 
-## Compiling
+## Required Software
 
-Using `nasm`, the [Netwide Assembler](https://www.nasm.us/)Install on Windows,
+I started out developing using `gcc` on Windows, but the easiest tools to use are Linux based, so I've switched to developing in Ubuntu in WSL.
 
-```sh
-winget install --id NASM.NASM
-```
-
-Compile,
+- `nasm`, the [Netwide Assembler](https://www.nasm.us/)
+- [QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC).
 
 ```sh
-nasm boot_sect.asm -f bin -o boot_sect.bin
+sudo apt update
+sudo apt install build-essential nasm qemu-system genisoimage
 ```
 
-## Emulators
-
-### Bochs
-
-Available from [The Bochs IA-32 Emulator Project](https://bochs.sourceforge.io/). The file for the boot drive is configured using the file `bochsrc` in the current directory.
-
-```sh
-bochs
-```
-
-### QEmu
+## QEmu
 
 [QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC).
 
