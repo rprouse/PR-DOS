@@ -27,21 +27,9 @@ print_string:
     popa
     ret
 
-; Prints a newline using the BIOS
-print_nl:
-    pusha
-    mov ah, WRITE_TELETYPE    ; int =10/ah=0x0e -> BIOS teletype function
-    mov al, CR
-    int INT_VIDEO_SERVICE
-    mov al, LF
-    int INT_VIDEO_SERVICE
-    popa
-    ret
-
 ; Prints the value of DX as a hexadecimal number followed by a newline
 print_hex_nl:
     call print_hex
-    call print_nl
     ret
 
 ; Prints the value of DX as a hexadecimal number
@@ -70,6 +58,6 @@ print_hex:
 
 ; =============== Data ===============
 hex_out: db '0x'
-hex_val: db '0000', 0
+hex_val: db '0000', CR, LF, 0
 
 %endif

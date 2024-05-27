@@ -62,10 +62,25 @@ I started out developing using `gcc` on Windows, but the easiest tools to use ar
 
 - `nasm`, the [Netwide Assembler](https://www.nasm.us/)
 - [QEmu](https://www.qemu.org/) is a generic machine emulator and virtualizer. [x86 Documentation](https://wiki.qemu.org/Documentation/Platforms/PC).
+- `mtools` a collection of utilities to access MS-DOS disks from Unix without mounting them.
 
 ```sh
 sudo apt update
-sudo apt install build-essential nasm qemu-system genisoimage
+sudo apt install build-essential nasm qemu-system genisoimage mtools bochs bochs-sdl bochsbios vgabios libsdl2-dev
+```
+
+## MTools
+
+To copy `bin/floppy.img` into the root of the floppy image,
+
+```sh
+mcopy -i bin/floppy.img bin/kernel.bin "::kernel.bin"
+```
+
+To list files on the floppy,
+
+```sh
+mdir -i bin/floppy.img
 ```
 
 ## QEmu
