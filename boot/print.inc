@@ -3,16 +3,25 @@
 
 bits 16
 
+; =============== Constants ===============
+; BIOS interupt functions
+; int 10h - Video Services
+INT_VIDEO_SERVICE  equ 0x10
+WRITE_TELETYPE     equ 0x0E
+
+CR equ 0x0D
+LF equ 0x0A
+
 ; Prints a string pointed to by the BX register using the BIOS
 print_string:
     pusha
     mov si, bx      ; si = bx
-    mov ah, 0x0E    ; int =10/ah=0x0e -> BIOS teletype function
+    mov ah, WRITE_TELETYPE    ; int =10/ah=0x0e -> BIOS teletype function
 .loop:
     lodsb           ; load byte from si into al and increments si
     cmp al, 0
     je .done
-    int 0x10
+    int INT_VIDEO_SERVICE
     jmp .loop
 .done:
     popa
@@ -21,11 +30,11 @@ print_string:
 ; Prints a newline using the BIOS
 print_nl:
     pusha
-    mov ah, 0x0E    ; int =10/ah=0x0e -> BIOS teletype function
+    mov ah, WRITE_TELETYPE    ; int =10/ah=0x0e -> BIOS teletype function
     mov al, CR
-    int 0x10
+    int INT_VIDEO_SERVICE
     mov al, LF
-    int 0x10
+    int INT_VIDEO_SERVICE
     popa
     ret
 
@@ -60,9 +69,6 @@ print_hex:
     ret
 
 ; =============== Data ===============
-CR equ 0x0D
-LF equ 0x0A
-
 hex_out: db '0x'
 hex_val: db '0000', 0
 
