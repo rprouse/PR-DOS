@@ -50,7 +50,7 @@ $(FLOPPY_IMG): bootloader kernel
 bootloader: $(BOOT_SECT)
 
 $(BOOT_SECT): boot/boot_sect.asm
-	$(NASM) $< -f bin -I boot -o $@
+	$(NASM) $< -f bin -I boot -l $(BINDIR)/boot_sect.lst -o $@
 
 #
 # Kernel image
